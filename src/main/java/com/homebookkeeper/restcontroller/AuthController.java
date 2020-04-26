@@ -21,27 +21,23 @@ public class AuthController {
     }
 
     @GetMapping(path = "/user")
-    public ResponseEntity<UserCreationDTO> getUserByEmail(@RequestParam String email) {
+    public ResponseEntity<UserDTO> getUserByEmail(@RequestParam String email) {
         User user = userService.getByEmail(email).orElse(null);
         if (user == null) {
-            return new ResponseEntity<UserCreationDTO>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<UserDTO>(HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<UserCreationDTO>(convertToUserCreationDto(user), HttpStatus.OK);
+        return new ResponseEntity<UserDTO>(convertToUserDTO(user), HttpStatus.OK);
     }
 
     @PostMapping(path = "/user")
-    public ResponseEntity<UserCreationDTO> createNewUser(@RequestBody UserCreationDTO userCreationDTO) {
+    public ResponseEntity<UserDTO> createNewUser(@RequestBody UserCreationDTO userCreationDTO) {
         if (userCreationDTO == null) {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        System.out.println("usercreationDto " + userCreationDTO);
-        User user = convertToUser(userCreationDTO);
-        System.out.println("convert to user success " + user);
-        User tempUser = userService.save(user);
-        System.out.println("save user success " + tempUser);
+        User user = userService.save(convertToUser(userCreationDTO));
 
-       return new ResponseEntity<UserCreationDTO>(convertToUserCreationDto(tempUser), HttpStatus.CREATED);
+       return new ResponseEntity<UserDTO>(convertToUserDTO(user), HttpStatus.CREATED);
     }
 
 
@@ -57,8 +53,12 @@ public class AuthController {
         return modelMapper.map(userDTO, User.class);
     }
 
-    private UserCreationDTO convertToUserCreationDto(User user) {
+    private UserCreationDTO convertToUserCreationDTO(User user) {
         return modelMapper.map(user, UserCreationDTO.class);
+    }
+
+    private UserDTO convertToUserDTO(User user) {
+        return modelMapper.map(user, UserDTO.class);
     }
 
 }

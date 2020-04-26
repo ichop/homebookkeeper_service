@@ -1,23 +1,20 @@
 package com.homebookkeeper.DTO;
 
-
+import com.homebookkeeper.model.CurrencyCodes;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-public class UserDTO {
+public class BalanceDTO {
 
-    private Long id;
+    private BigDecimal value;
 
-    private String email;
-
-    private String name;
-
-    private String password;
+    private CurrencyCodes currency;
 }

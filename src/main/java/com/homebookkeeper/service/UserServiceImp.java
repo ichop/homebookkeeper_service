@@ -1,6 +1,9 @@
 package com.homebookkeeper.service;
 
+import com.homebookkeeper.model.Balance;
+import com.homebookkeeper.model.CurrencyCodes;
 import com.homebookkeeper.model.User;
+import com.homebookkeeper.repository.BalanceRepo;
 import com.homebookkeeper.repository.UserRepo;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +13,11 @@ import java.util.Optional;
 public class UserServiceImp implements UserService {
 
     private UserRepo userRepo;
+    private BalanceRepo balanceRepo;
 
-    public UserServiceImp(UserRepo userRepo) {
+    public UserServiceImp(UserRepo userRepo, BalanceRepo balanceRepo) {
         this.userRepo = userRepo;
+        this.balanceRepo = balanceRepo;
     }
 
     @Override
@@ -29,7 +34,9 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User save(User user) {
-     return  userRepo.save(user);
+     user = userRepo.save(user);
+     balanceRepo.save(new Balance(user, CurrencyCodes.PLN));
+        return user;
     }
 
     @Override

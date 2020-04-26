@@ -1,23 +1,22 @@
 package com.homebookkeeper.DTO;
 
-
+import com.homebookkeeper.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-public class UserDTO {
-
-    private Long id;
-
-    private String email;
+public class CategoryDTO {
 
     private String name;
 
-    private String password;
+    private BigDecimal capacity;
+
 }

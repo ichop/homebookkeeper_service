@@ -28,4 +28,10 @@ public class Balance extends BaseEntity{
     @NotNull
     @Enumerated(EnumType.STRING)
     private CurrencyCodes baseCurrency;
+
+    public Balance(User user, CurrencyCodes baseCurrency){
+        this.user = user;
+        this.baseCurrency = baseCurrency;
+        this.amount = BigDecimal.ZERO;
+    }
 }

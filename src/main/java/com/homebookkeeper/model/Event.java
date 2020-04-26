@@ -1,9 +1,6 @@
 package com.homebookkeeper.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,6 +13,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @ToString
+@AllArgsConstructor
 public class Event extends BaseEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -35,4 +33,5 @@ public class Event extends BaseEntity {
 
     @ManyToOne
     private User user;
+
 }
