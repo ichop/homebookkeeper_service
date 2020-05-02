@@ -1,7 +1,7 @@
 package com.homebookkeeper.restcontroller;
 
-import com.homebookkeeper.DTO.UserCreationDTO;
 import com.homebookkeeper.DTO.UserDTO;
+import com.homebookkeeper.mapper.UserMapper;
 import com.homebookkeeper.model.User;
 import com.homebookkeeper.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class AuthController {
 
-    private UserService userService;
-    private ModelMapper modelMapper;
+    private final UserService userService;
+    private final UserMapper userMapper;
 
-    public AuthController(UserService userService, ModelMapper modelMapper) {
+    public AuthController(UserService userService, UserMapper userMapper) {
         this.userService = userService;
-        this.modelMapper = modelMapper;
+        this.userMapper = userMapper;
     }
 
     @GetMapping(path = "/user")
@@ -27,38 +27,16 @@ public class AuthController {
             return new ResponseEntity<UserDTO>(HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<UserDTO>(convertToUserDTO(user), HttpStatus.OK);
+        return new ResponseEntity<UserDTO>(userMapper.toDTO(user), HttpStatus.OK);
     }
 
     @PostMapping(path = "/user")
-    public ResponseEntity<UserDTO> createNewUser(@RequestBody UserCreationDTO userCreationDTO) {
-        if (userCreationDTO == null) {
+    public ResponseEntity<UserDTO> createNewUser(@RequestBody UserDTO userDTO) {
+        if (userDTO == null) {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        User user = userService.save(convertToUser(userCreationDTO));
+        User user = userService.save(userMapper.toEntity(userDTO));
 
-       return new ResponseEntity<UserDTO>(convertToUserDTO(user), HttpStatus.CREATED);
+       return new ResponseEntity<UserDTO>(userMapper.toDTO(user), HttpStatus.CREATED);
     }
-
-
-    private UserDTO convertToDTO(User user) {
-        return modelMapper.map(user, UserDTO.class);
-    }
-
-    private User convertToUser(UserCreationDTO userCreationDTO) {
-        return modelMapper.map(userCreationDTO, User.class);
-    }
-
-    private User convertToUser(UserDTO userDTO) {
-        return modelMapper.map(userDTO, User.class);
-    }
-
-    private UserCreationDTO convertToUserCreationDTO(User user) {
-        return modelMapper.map(user, UserCreationDTO.class);
-    }
-
-    private UserDTO convertToUserDTO(User user) {
-        return modelMapper.map(user, UserDTO.class);
-    }
-
 }

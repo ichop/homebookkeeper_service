@@ -31,7 +31,9 @@ public class Event extends BaseEntity {
 
     private String description;
 
+    @NotNull
     @ManyToOne
     private User user;
+
 
 }

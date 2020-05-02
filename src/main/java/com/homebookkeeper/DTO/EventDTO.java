@@ -1,7 +1,7 @@
 package com.homebookkeeper.DTO;
 
 
-import com.homebookkeeper.model.Category;
+
 import com.homebookkeeper.model.EventType;
 import lombok.*;
 
@@ -14,17 +14,17 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @AllArgsConstructor
-public class EventDTO {
+public class EventDTO extends BaseDTO {
 
     private EventType type;
 
     private BigDecimal amount;
 
-    private Long category;
+    private Long categoryId;
 
     private LocalDate date;
 
     private String description;
 
-
+    private Long userId;
 }

@@ -2,6 +2,7 @@ package com.homebookkeeper.restcontroller;
 
 
 import com.homebookkeeper.DTO.CategoryDTO;
+import com.homebookkeeper.mapper.CategoryMapper;
 import com.homebookkeeper.model.Category;
 import com.homebookkeeper.service.CategoryService;
 import org.modelmapper.ModelMapper;
@@ -15,49 +16,46 @@ import java.util.stream.Collectors;
 @RestController
 public class CategoriesController {
 
-    private CategoryService categoryService;
-    private ModelMapper modelMapper;
+    private final CategoryService categoryService;
+    private final CategoryMapper categoryMapper;
 
-    public CategoriesController(CategoryService categoryService, ModelMapper modelMapper) {
+    public CategoriesController(CategoryService categoryService, CategoryMapper categoryMapper) {
         this.categoryService = categoryService;
-        this.modelMapper = modelMapper;
+        this.categoryMapper = categoryMapper;
     }
 
     @PostMapping(path = "/categories")
-    public ResponseEntity<CategoryDTO> createCategory(@RequestBody Category category) {
-        return new ResponseEntity<CategoryDTO>(mapToCategoryDTO(categoryService.save(category)), HttpStatus.CREATED);
+    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDto) {
+        Category category = categoryService.save(categoryMapper.toEntity(categoryDto));
+        return new ResponseEntity<CategoryDTO>(categoryMapper.toDTO(category), HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/categories")
     public ResponseEntity<List<CategoryDTO>> getAllCategoriesPerUser(@RequestParam Long userId) {
         List<CategoryDTO> categoryDTOS = categoryService.getAllByUserId(userId)
-                .stream().map(category -> {
-                    return mapToCategoryDTO(category);
-                }).collect(Collectors.toList());
+                .stream().map(categoryMapper::toDTO).collect(Collectors.toList());
         return new ResponseEntity<List<CategoryDTO>>(categoryDTOS, HttpStatus.OK);
     }
 
 
-    @PutMapping(path = "/category/id")
-    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id, @RequestParam Category category) {
-        if (id != null && category != null) {
-            return new ResponseEntity<CategoryDTO>(mapToCategoryDTO(categoryService.save(category)), HttpStatus.OK);
+    @PutMapping(path = "/category")
+    public ResponseEntity<CategoryDTO> updateCategory(@RequestBody CategoryDTO categoryDTO) {
+        if (categoryDTO != null) {
+            Category category = categoryService.save(categoryMapper.toEntity(categoryDTO));
+            return new ResponseEntity<CategoryDTO>(categoryMapper.toDTO(category), HttpStatus.OK);
         }
         return new ResponseEntity<CategoryDTO>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping(path = "/category")
     public ResponseEntity<CategoryDTO> getCategoryById(@RequestParam Long id) {
-        Category category = categoryService.getById(id).orElse(null);
-        if (category == null) {
-            return new ResponseEntity<CategoryDTO>(HttpStatus.BAD_REQUEST);
+        if (id != null) {
+            Category category = categoryService.getById(id).orElse(null);
+            if (category != null) {
+                return new ResponseEntity<CategoryDTO>(categoryMapper.toDTO(category), HttpStatus.OK);
+            }
         }
-        return new ResponseEntity<CategoryDTO>(mapToCategoryDTO(category), HttpStatus.OK);
+        return new ResponseEntity<CategoryDTO>(HttpStatus.BAD_REQUEST);
     }
 
-    private CategoryDTO mapToCategoryDTO(Category category) {
-        CategoryDTO categoryDTO = new CategoryDTO();
-        modelMapper.map(category, categoryDTO);
-        return categoryDTO;
-    }
 }

@@ -11,9 +11,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
-public class UserDTO {
-
-    private Long id;
+public class UserDTO extends BaseDTO {
 
     private String email;
 

@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Setter
 @ToString
 @NoArgsConstructor
-public class BalanceDTO {
+public class BalanceDTO extends BaseDTO {
 
     private BigDecimal value;
 

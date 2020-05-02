@@ -3,8 +3,8 @@ package com.homebookkeeper.service;
 import com.homebookkeeper.model.Event;
 import com.homebookkeeper.repository.EventRepo;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -21,12 +21,17 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public Event getById(Long id) {
+        return eventRepo.findById(id).orElse(null);
+    }
+
+    @Override
     public List<Event> findAll(Long userId) {
-        return  eventRepo.findByUserId(userId);
+        return eventRepo.findByUserId(userId);
     }
 
     @Override
     public List<Event> findByCategory(Long userId, Long categoryId) {
-       return eventRepo.findByUserIdAndCategoryId(userId, categoryId);
+        return eventRepo.findByUserIdAndCategoryId(userId, categoryId);
     }
 }

@@ -1,6 +1,6 @@
 package com.homebookkeeper.DTO;
 
-import com.homebookkeeper.model.User;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,10 +13,11 @@ import java.math.BigDecimal;
 @Setter
 @ToString
 @NoArgsConstructor
-public class CategoryDTO {
+public class CategoryDTO extends BaseDTO{
 
     private String name;
 
     private BigDecimal capacity;
 
+    private Long userId;
 }

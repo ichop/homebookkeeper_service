@@ -27,12 +27,4 @@ public class User extends BaseEntity {
     @NotNull
     private String password;
 
-//    @OneToOne
-//    private Balance balance;
-
-//    @OneToMany
-//    private List<Category> categories;
-//
-//    @OneToMany
-//    private List<Event> events;
 }

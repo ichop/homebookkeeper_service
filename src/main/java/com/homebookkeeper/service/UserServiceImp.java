@@ -35,7 +35,7 @@ public class UserServiceImp implements UserService {
     @Override
     public User save(User user) {
      user = userRepo.save(user);
-     balanceRepo.save(new Balance(user, CurrencyCodes.PLN));
+     balanceRepo.save(new Balance(user, CurrencyCodes.RUB));
         return user;
     }
 

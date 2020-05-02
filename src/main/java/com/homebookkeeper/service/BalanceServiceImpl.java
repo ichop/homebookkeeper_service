@@ -14,7 +14,13 @@ public class BalanceServiceImpl implements BalanceService {
         this.balanceRepo = balanceRepo;
     }
 
+    @Override
     public Optional<Balance> getById(Long id) {
         return balanceRepo.findById(id);
+    }
+
+    @Override
+    public Balance save(Balance balance) {
+        return balanceRepo.save(balance);
     }
 }
